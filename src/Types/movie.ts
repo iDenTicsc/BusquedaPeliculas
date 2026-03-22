@@ -1,4 +1,4 @@
-export interface Movie {
+export interface ApiMovie {
     Title: string;
     Year: string;
     imdbID: string;
@@ -6,8 +6,15 @@ export interface Movie {
     Poster: string;
 }
 
+export interface Movie {
+    title: string;
+    year: string;
+    id: string;
+    poster: string;
+}
+
 export interface ApiResponse {
-    Search?: Movie[];
+    Search?: ApiMovie[];
     totalResults?: string;
     Response: "True" | "False";
     Error?: string;
