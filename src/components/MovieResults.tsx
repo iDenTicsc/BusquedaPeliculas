@@ -7,12 +7,12 @@ type Props = {
 const MovieResults = ({ movies }: Props) => {
     return (
         <>
-            <ul>
+            <ul className='movies'>
                 {movies.map(movie => (
-                    <li key={movie.imdbID}>
-                        <h3>{movie.Title}</h3>
-                        <p>{movie.Year}</p>
-                        <img src={movie.Poster} alt={movie.Title} />
+                    <li className='movie' key={movie.id}>
+                        <h5>{movie.title}</h5>
+                        <h5>{movie.year}</h5>
+                        <img src={movie.poster} alt={movie.title} />
                     </li>
                 ))}
             </ul>
