@@ -22,7 +22,7 @@ export function useMovies({ search, sort }: useMoviesProps) {
         setError(null)
         previousSearch.current = search
 
-        await delay(1000)
+        await delay(500)
 
         if (search != "") {
           const newMovies = await fetchMovies({ search })
