@@ -1,5 +1,5 @@
 import type { Movie } from "../Types/movie"
-import { useEffect, useRef, useState, useMemo } from "react"
+import { useEffect, useRef, useState, useMemo, useCallback } from "react"
 import fetchMovies from "../services/fetchMovies"
 
 type useMoviesProps = {
@@ -14,15 +14,14 @@ export function useMovies({ search, sort }: useMoviesProps) {
   const previousSearch = useRef(search)
 
   const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-  const getMovies = useMemo(() => {
-    return async (search: string) => { //Pasamos search por parametro para que no hayan dependencias que re-rendericen el metodo cada vez que cambia search
+  const getMovies = useCallback(async (search: string) => { //Pasamos search por parametro para que no hayan dependencias que re-rendericen el metodo cada vez que cambia search
       if (search === previousSearch.current) return
       try {
         setLoading(true)
         setError(null)
         previousSearch.current = search
 
-        await delay(500)
+        await delay(0)
 
         if (search != "") {
           const newMovies = await fetchMovies({ search })
@@ -41,8 +40,7 @@ export function useMovies({ search, sort }: useMoviesProps) {
       } finally {
         setLoading(false)
       }
-    }
-  }, []) //Podemos renderizar solo una vez
+    }, []) //Podemos renderizar solo una vez
 
   const sortedMovies = useMemo(() => {
     return sort ? [...movies].sort((a, b) => a.title.localeCompare(b.title)) : movies

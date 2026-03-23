@@ -2,8 +2,9 @@ import './App.css'
 import MovieNoResults from './components/MovieNoResults'
 import MovieResults from './components/MovieResults'
 import { useMovies } from './hooks/useMovies'
-import { useEffect, useState, type ChangeEvent, type SubmitEvent } from 'react'
+import { useCallback, useEffect, useState, type ChangeEvent, type SubmitEvent } from 'react'
 import { useSearch } from './hooks/useSearch'
+import debounce from 'just-debounce-it'
 
 
 function App() {
@@ -13,10 +14,18 @@ function App() {
 
   const HasMovies = movies.length > 0
 
+  const debouncedGetMovies = useCallback(
+    debounce((search: string) => {
+      console.log('search', search)
+      getMovies(search)
+    }, 500), [getMovies]
+  ) 
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const NewQuery = event.target.value
     if (NewQuery.startsWith(' ')) return
     setSearch(event.target.value)
+    debouncedGetMovies(NewQuery)
   }
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
@@ -35,7 +44,7 @@ function App() {
   useEffect(() => {
     console.log("Render movie recived")
   }, [getMovies])
-  
+
 
   return (
     <div className='page'>
